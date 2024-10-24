@@ -8,6 +8,7 @@ public class FollowWaypoint : MonoBehaviour
     int currentWaypoint = 0;
 
     public float speed = 10;
+    public float rotSpeed = 10;
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +26,11 @@ public class FollowWaypoint : MonoBehaviour
         if (currentWaypoint >= wayPoints.Length)
             currentWaypoint = 0;
 
-        transform.LookAt(wayPoints[currentWaypoint].transform);
+        //transform.LookAt(wayPoints[currentWaypoint].transform);
         transform.Translate(0, 0, speed * Time.deltaTime);
+
+        Quaternion lookAtWaypoint = Quaternion.LookRotation(wayPoints[currentWaypoint].transform.position - transform.position);
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookAtWaypoint, rotSpeed * Time.deltaTime);
     }
 }
